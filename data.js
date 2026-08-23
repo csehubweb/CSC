@@ -369,7 +369,8 @@ const categoryLabels = {
     result: "Results & Admit Cards",
     government: "Government Services",
     bihar: "Bihar Board",
-    aadhaar: "Aadhaar / UIDAI"
+    aadhaar: "Aadhaar / UIDAI",
+    pan: "PAN CARD"
 };
 
 const sarkariBoxConfig = [
@@ -432,6 +433,14 @@ const sarkariBoxConfig = [
         title: "AADHAAR / UIDAI (आधार सेवा)",
         headerBg: "linear-gradient(135deg, #4338ca 0%, #6366f1 100%)",
         borderColor: "#6366f1"
+    },
+    {
+       category: "pan",
+        title: "PAN CARD / UIDAI (आधार सेवा)",
+        headerBg: "linear-gradient(135deg, #4338ca 0%, #6366f1 100%)",
+        borderColor: "#6366f1"
+
+        
     }
 ];
 
