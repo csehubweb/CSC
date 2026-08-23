@@ -45,7 +45,7 @@ const categoryIcons = {
     result: "fa-square-poll-vertical",
     government: "fa-building-columns",
     bihar: "fa-school",
-    aadhaar: "fa-id-card"
+    aadhaar: "fa-id-card",
     pan: "fa-id-card"
 };
 
