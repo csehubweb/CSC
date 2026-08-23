@@ -46,6 +46,7 @@ const categoryIcons = {
     government: "fa-building-columns",
     bihar: "fa-school",
     aadhaar: "fa-id-card"
+    pan: "fa-id-card"
 };
 
 // Initialize Application
