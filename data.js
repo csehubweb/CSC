@@ -347,11 +347,20 @@ const initialWebsites = [
         isNew: true,
         badgeText: "OFFICIAL"
     },
-    {
+{    
         id: "38",
         title: "MyAadhaar Services",
         url: "https://myaadhaar.uidai.gov.in/",
         category: "aadhaar",
+        description: "Download Aadhaar, check status, update details, and use online Aadhaar services.",
+        tags: ["Aadhaar", "Online Service"],
+        isNew: false
+    },
+    {    
+        id: "39",
+        title: "MyAadhaar Services",
+        url: "https://myaadhaar.uidai.gov.in/",
+        category: "pan",
         description: "Download Aadhaar, check status, update details, and use online Aadhaar services.",
         tags: ["Aadhaar", "Online Service"],
         isNew: false
