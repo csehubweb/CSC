@@ -4,7 +4,7 @@ const initialWebsites = [
         id: "1",
         title: "LeetCode (Problem Solving & DSA)",
         url: "https://leetcode.com/",
-        category: "coding",
+        category: "pan",
         description: "Platform for preparing technical coding interviews and practicing DSA problems.",
         tags: ["DSA", "Interviews", "Coding"],
         isNew: true,
