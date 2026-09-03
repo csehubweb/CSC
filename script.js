@@ -61,12 +61,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderMarqueeNotices() {
     if (!marqueeText || !Array.isArray(marqueeNotice)) return;
 
-    marqueeText.innerHTML = marqueeNotice.map((notice, index) => `
-        <a class="update-link" href="${escapeAttribute(notice.url)}" target="_blank" rel="noopener noreferrer">
+    const renderNoticeSet = (hidden = false) => marqueeNotice.map((notice, index) => `
+        <a class="update-link" href="${escapeAttribute(notice.url)}" target="_blank" rel="noopener noreferrer"${hidden ? ` tabindex="-1" aria-hidden="true"` : ""}>
             <span class="update-type">${escapeHTML(notice.type)}</span>
             <span>${index === 0 ? "New: " : ""}${escapeHTML(notice.title)}</span>
         </a>
-    `).join(`<span class="update-separator">|</span>`);
+    `).join(`<span class="update-separator"${hidden ? ` aria-hidden="true"` : ""}>|</span>`);
+
+    marqueeText.innerHTML = `${renderNoticeSet()}${renderNoticeSet(true)}`;
 }
 
 // Load Theme Preference
