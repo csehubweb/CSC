@@ -34,8 +34,8 @@ const btnCardView = document.getElementById("btnCardView");
 let currentView = "sarkari";
 
 // Default data structures (in case external dependencies fail)
-const marqueeNotice = typeof marqueeNotice !== "undefined" ? marqueeNotice : [];
-const categoryLabels = typeof categoryLabels !== "undefined" ? categoryLabels : {
+let marqueeNoticeData = [];
+let categoryLabelsData = {
     all: "All Categories",
     coding: "Coding",
     webdev: "Web Dev",
@@ -50,8 +50,8 @@ const categoryLabels = typeof categoryLabels !== "undefined" ? categoryLabels : 
     pan: "PAN",
     rtps: "RTPS"
 };
-const sarkariBoxConfig = typeof sarkariBoxConfig !== "undefined" ? sarkariBoxConfig : [];
-const initialWebsites = typeof initialWebsites !== "undefined" ? initialWebsites : [];
+let sarkariBoxConfigData = [];
+let initialWebsitesData = [];
 
 // Icon mapping helper for categories
 const categoryIcons = {
@@ -70,8 +70,25 @@ const categoryIcons = {
     rtps: "fa-file-lines"
 };
 
+// Load external dependencies safely
+function loadExternalData() {
+    if (typeof marqueeNotice !== "undefined" && Array.isArray(marqueeNotice)) {
+        marqueeNoticeData = marqueeNotice;
+    }
+    if (typeof categoryLabels !== "undefined" && typeof categoryLabels === "object") {
+        categoryLabelsData = categoryLabels;
+    }
+    if (typeof sarkariBoxConfig !== "undefined" && Array.isArray(sarkariBoxConfig)) {
+        sarkariBoxConfigData = sarkariBoxConfig;
+    }
+    if (typeof initialWebsites !== "undefined" && Array.isArray(initialWebsites)) {
+        initialWebsitesData = initialWebsites;
+    }
+}
+
 // Initialize Application
 document.addEventListener("DOMContentLoaded", () => {
+    loadExternalData();
     loadThemePreference();
     loadWebsitesAndFavorites();
     renderMarqueeNotices();
@@ -81,9 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function renderMarqueeNotices() {
-    if (!marqueeText || !Array.isArray(marqueeNotice) || marqueeNotice.length === 0) return;
+    if (!marqueeText || !Array.isArray(marqueeNoticeData) || marqueeNoticeData.length === 0) return;
 
-    marqueeText.innerHTML = marqueeNotice.map((notice, index) => `
+    marqueeText.innerHTML = marqueeNoticeData.map((notice, index) => `
         <a class="update-link" href="${escapeAttribute(notice.url)}" target="_blank" rel="noopener noreferrer">
             <span class="update-type">${escapeHTML(notice.type)}</span>
             <span>${index === 0 ? "New: " : ""}${escapeHTML(notice.title)}</span>
@@ -121,7 +138,7 @@ function toggleTheme() {
 // Load Websites & Favorites from LocalStorage or Data.js
 function loadWebsitesAndFavorites() {
     // All links are maintained in data.js; the public UI cannot add links.
-    websites = [...initialWebsites];
+    websites = [...initialWebsitesData];
 
     const savedFavorites = JSON.parse(localStorage.getItem("cse_favorites")) || [];
     favorites = new Set(savedFavorites);
@@ -156,6 +173,7 @@ function deleteCustomWebsite(id) {
 
 // Render Category Tabs dynamically
 function renderCategoryTabs() {
+    if (!categoryTabsContainer) return;
     categoryTabsContainer.innerHTML = "";
 
     // Count websites per category
@@ -164,7 +182,7 @@ function renderCategoryTabs() {
         counts[site.category] = (counts[site.category] || 0) + 1;
     });
 
-    Object.keys(categoryLabels).forEach(catKey => {
+    Object.keys(categoryLabelsData).forEach(catKey => {
         const count = counts[catKey] || 0;
         const tab = document.createElement("button");
         tab.className = `category-tab ${catKey === activeCategory ? "active" : ""}`;
@@ -173,7 +191,7 @@ function renderCategoryTabs() {
         const iconClass = categoryIcons[catKey] || "fa-bookmark";
         tab.innerHTML = `
             <i class="fas ${iconClass}"></i>
-            <span>${categoryLabels[catKey]}</span>
+            <span>${categoryLabelsData[catKey]}</span>
             <span class="count-badge">${count}</span>
         `;
 
@@ -181,7 +199,7 @@ function renderCategoryTabs() {
             activeCategory = catKey;
             document.querySelectorAll(".category-tab").forEach(t => t.classList.remove("active"));
             tab.classList.add("active");
-            categoryTabsContainer.classList.remove("mobile-menu-open");
+            if (categoryTabsContainer) categoryTabsContainer.classList.remove("mobile-menu-open");
             mobileCategoryToggle?.setAttribute("aria-expanded", "false");
             renderWebsites();
         });
@@ -202,7 +220,7 @@ function getFilteredWebsites() {
             site.title.toLowerCase().includes(query) ||
             site.description.toLowerCase().includes(query) ||
             site.tags.some(tag => tag.toLowerCase().includes(query)) ||
-            (categoryLabels[site.category] && categoryLabels[site.category].toLowerCase().includes(query));
+            (categoryLabelsData[site.category] && categoryLabelsData[site.category].toLowerCase().includes(query));
 
         // Favorites Filter
         const matchesFavorites = !showFavoritesOnly || favorites.has(site.id);
@@ -214,23 +232,25 @@ function getFilteredWebsites() {
 // Render Website Cards Grid
 function renderWebsites() {
     const filtered = getFilteredWebsites();
-    websiteGrid.innerHTML = "";
-    sarkariBoxGrid.innerHTML = "";
+    if (websiteGrid) websiteGrid.innerHTML = "";
+    if (sarkariBoxGrid) sarkariBoxGrid.innerHTML = "";
 
     // Update stats counters
-    visibleCountEl.textContent = filtered.length;
-    totalCountEl.textContent = websites.length;
+    if (visibleCountEl) visibleCountEl.textContent = filtered.length;
+    if (totalCountEl) totalCountEl.textContent = websites.length;
 
     renderSarkariBoxes(filtered);
 
     if (filtered.length === 0) {
-        websiteGrid.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-search empty-icon"></i>
-                <h3 class="empty-title">Koi Website Nahi Mili!</h3>
-                <p class="empty-desc">Aapki search query ya selected category ke liye koi result nahi mila. Search text change karein ya naye links add karein.</p>
-            </div>
-        `;
+        if (websiteGrid) {
+            websiteGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-search empty-icon"></i>
+                    <h3 class="empty-title">Koi Website Nahi Mili!</h3>
+                    <p class="empty-desc">Aapki search query ya selected category ke liye koi result nahi mila. Search text change karein ya naye links add karein.</p>
+                </div>
+            `;
+        }
         return;
     }
 
@@ -240,7 +260,7 @@ function renderWebsites() {
         card.className = "card";
 
         // Category display label
-        const catLabel = categoryLabels[site.category] || site.category;
+        const catLabel = categoryLabelsData[site.category] || site.category;
         
         // Custom user added indicator
         const isCustom = site.isCustom === true;
@@ -290,17 +310,19 @@ function renderWebsites() {
 
         // Event listener for Favorite star
         const starBtn = card.querySelector(".btn-star");
-        starBtn.addEventListener("click", () => toggleFavorite(site));
+        if (starBtn) starBtn.addEventListener("click", () => toggleFavorite(site));
 
         // Copy Link Action
         const copyBtn = card.querySelector(".btn-copy-link");
-        copyBtn.addEventListener("click", () => {
-            navigator.clipboard.writeText(site.url).then(() => {
-                showToast("Link clipboard me copy ho gaya!");
-            }).catch(err => {
-                console.error("Copy failed", err);
+        if (copyBtn) {
+            copyBtn.addEventListener("click", () => {
+                navigator.clipboard.writeText(site.url).then(() => {
+                    showToast("Link clipboard me copy ho gaya!");
+                }).catch(err => {
+                    console.error("Copy failed", err);
+                });
             });
-        });
+        }
 
         // Delete Custom Link Action
         const deleteBtn = card.querySelector(".btn-delete-card");
@@ -312,11 +334,13 @@ function renderWebsites() {
             });
         }
 
-        websiteGrid.appendChild(card);
+        if (websiteGrid) websiteGrid.appendChild(card);
     });
 }
 
 function renderSarkariBoxes(filtered) {
+    if (!sarkariBoxGrid) return;
+    
     if (filtered.length === 0) {
         sarkariBoxGrid.innerHTML = `
             <div class="empty-state">
@@ -329,8 +353,8 @@ function renderSarkariBoxes(filtered) {
     }
 
     const visibleCategories = activeCategory === "all"
-        ? sarkariBoxConfig
-        : sarkariBoxConfig.filter(config => config.category === activeCategory);
+        ? sarkariBoxConfigData
+        : sarkariBoxConfigData.filter(config => config.category === activeCategory);
 
     visibleCategories.forEach(config => {
         const categorySites = filtered.filter(site => site.category === config.category);
@@ -346,7 +370,9 @@ function renderSarkariBoxes(filtered) {
         `;
 
         const body = box.querySelector(".sarkari-box-body");
-        categorySites.forEach(site => body.appendChild(createSarkariLink(site)));
+        if (body) {
+            categorySites.forEach(site => body.appendChild(createSarkariLink(site)));
+        }
         sarkariBoxGrid.appendChild(box);
     });
 }
@@ -369,7 +395,9 @@ function createSarkariLink(site) {
         </div>
     `;
 
-    item.querySelector(".btn-star-mini").addEventListener("click", () => toggleFavorite(site));
+    const starMinBtn = item.querySelector(".btn-star-mini");
+    if (starMinBtn) starMinBtn.addEventListener("click", () => toggleFavorite(site));
+    
     const deleteButton = item.querySelector(".btn-delete-mini");
     if (deleteButton) {
         deleteButton.addEventListener("click", () => {
@@ -396,10 +424,10 @@ function toggleFavorite(site) {
 function setView(view) {
     currentView = view;
     const showSarkari = view === "sarkari";
-    sarkariBoxGrid.classList.toggle("hidden", !showSarkari);
-    websiteGrid.classList.toggle("hidden", showSarkari);
-    btnSarkariView.classList.toggle("active", showSarkari);
-    btnCardView.classList.toggle("active", !showSarkari);
+    if (sarkariBoxGrid) sarkariBoxGrid.classList.toggle("hidden", !showSarkari);
+    if (websiteGrid) websiteGrid.classList.toggle("hidden", showSarkari);
+    if (btnSarkariView) btnSarkariView.classList.toggle("active", showSarkari);
+    if (btnCardView) btnCardView.classList.toggle("active", !showSarkari);
 }
 
 // Icon mapper for website card
@@ -417,24 +445,27 @@ function getIconForSite(site) {
     if (site.category === "rtps") return "fa-file-lines";
     if (site.category === "pan") return "fa-certificate";
     return "fa-globe";
-    
 }
 
 // Setup Event Listeners
 function setupEventListeners() {
-    btnSarkariView.addEventListener("click", () => setView("sarkari"));
-    btnCardView.addEventListener("click", () => setView("cards"));
+    if (btnSarkariView) btnSarkariView.addEventListener("click", () => setView("sarkari"));
+    if (btnCardView) btnCardView.addEventListener("click", () => setView("cards"));
 
     contactToggle?.addEventListener("click", () => {
         const contactStrip = contactToggle.closest(".contact-strip");
-        const isOpen = contactStrip.classList.toggle("contact-open");
-        contactToggle.setAttribute("aria-expanded", String(isOpen));
+        if (contactStrip) {
+            const isOpen = contactStrip.classList.toggle("contact-open");
+            contactToggle.setAttribute("aria-expanded", String(isOpen));
+        }
     });
 
     mobileQuickToggle?.addEventListener("click", () => {
         const quickAccess = mobileQuickToggle.closest(".quick-access");
-        const isOpen = quickAccess.classList.toggle("quick-open");
-        mobileQuickToggle.setAttribute("aria-expanded", String(isOpen));
+        if (quickAccess) {
+            const isOpen = quickAccess.classList.toggle("quick-open");
+            mobileQuickToggle.setAttribute("aria-expanded", String(isOpen));
+        }
     });
 
     document.querySelectorAll(".quick-access-link").forEach(button => {
@@ -444,38 +475,46 @@ function setupEventListeners() {
                 tab.classList.toggle("active", tab.dataset.category === activeCategory);
             });
             renderWebsites();
-            document.getElementById("categoryTabs").scrollIntoView({ behavior: "smooth", block: "center" });
+            const catTabs = document.getElementById("categoryTabs");
+            if (catTabs) catTabs.scrollIntoView({ behavior: "smooth", block: "center" });
         });
     });
 
     // Search input
     mobileSearchToggle?.addEventListener("click", () => {
-        const isOpen = document.querySelector(".search-box").classList.toggle("mobile-search-open");
-        mobileSearchToggle.setAttribute("aria-label", isOpen ? "Close search" : "Open search");
-        if (isOpen) searchInput.focus();
+        const searchBox = document.querySelector(".search-box");
+        if (searchBox) {
+            const isOpen = searchBox.classList.toggle("mobile-search-open");
+            mobileSearchToggle.setAttribute("aria-label", isOpen ? "Close search" : "Open search");
+            if (isOpen && searchInput) searchInput.focus();
+        }
     });
 
-    searchInput.addEventListener("input", (e) => {
-        searchQuery = e.target.value;
-        if (searchQuery.length > 0) {
-            btnClearSearch.classList.add("visible");
-        } else {
-            btnClearSearch.classList.remove("visible");
-        }
-        renderWebsites();
-    });
+    if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+            searchQuery = e.target.value;
+            if (searchQuery.length > 0) {
+                btnClearSearch?.classList.add("visible");
+            } else {
+                btnClearSearch?.classList.remove("visible");
+            }
+            renderWebsites();
+        });
+    }
 
     // Clear search
-    btnClearSearch.addEventListener("click", () => {
-        searchInput.value = "";
+    btnClearSearch?.addEventListener("click", () => {
+        if (searchInput) searchInput.value = "";
         searchQuery = "";
         btnClearSearch.classList.remove("visible");
         renderWebsites();
     });
 
     mobileCategoryToggle?.addEventListener("click", () => {
-        const isOpen = categoryTabsContainer.classList.toggle("mobile-menu-open");
-        mobileCategoryToggle.setAttribute("aria-expanded", String(isOpen));
+        if (categoryTabsContainer) {
+            const isOpen = categoryTabsContainer.classList.toggle("mobile-menu-open");
+            mobileCategoryToggle.setAttribute("aria-expanded", String(isOpen));
+        }
     });
 
     // Theme toggle
@@ -496,26 +535,28 @@ function setupEventListeners() {
     });
 
     mobileWebMenuBtn?.addEventListener("click", () => {
-        const isOpen = mobileWebMenu.classList.toggle("is-open");
-        mobileWebMenuBtn.setAttribute("aria-expanded", String(isOpen));
+        if (mobileWebMenu) {
+            const isOpen = mobileWebMenu.classList.toggle("is-open");
+            mobileWebMenuBtn.setAttribute("aria-expanded", String(isOpen));
+        }
     });
 
     mobileWebMenu?.querySelectorAll("[data-menu-action]").forEach(button => {
         button.addEventListener("click", () => {
             const action = button.dataset.menuAction;
-            if (action === "box") btnSarkariView.click();
-            if (action === "cards") btnCardView.click();
+            if (action === "box") btnSarkariView?.click();
+            if (action === "cards") btnCardView?.click();
             if (action === "favorites") favoritesFilterBtn?.click();
             if (action === "theme") themeToggleBtn?.click();
             if (action === "categories") mobileCategoryToggle?.click();
             if (action === "quick") mobileQuickToggle?.click();
-            mobileWebMenu.classList.remove("is-open");
-            mobileWebMenuBtn.setAttribute("aria-expanded", "false");
+            if (mobileWebMenu) mobileWebMenu.classList.remove("is-open");
+            mobileWebMenuBtn?.setAttribute("aria-expanded", "false");
         });
     });
 
     mobileMenuSearchInput?.addEventListener("input", event => {
-        searchInput.value = event.target.value;
+        if (searchInput) searchInput.value = event.target.value;
         searchQuery = event.target.value;
         renderWebsites();
     });
@@ -535,8 +576,8 @@ function setupEventListeners() {
         addWebsiteForm.reset();
     };
 
-    closeModalBtn.addEventListener("click", closeModal);
-    cancelModalBtn.addEventListener("click", closeModal);
+    closeModalBtn?.addEventListener("click", closeModal);
+    cancelModalBtn?.addEventListener("click", closeModal);
 
     websiteModal.addEventListener("click", (e) => {
         if (e.target === websiteModal) closeModal();
@@ -546,11 +587,11 @@ function setupEventListeners() {
     addWebsiteForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const title = document.getElementById("siteTitle").value.trim();
-        let url = document.getElementById("siteUrl").value.trim();
-        const category = document.getElementById("siteCategory").value;
-        const description = document.getElementById("siteDescription").value.trim();
-        const tagsInput = document.getElementById("siteTags").value.trim();
+        const title = document.getElementById("siteTitle")?.value.trim() || "";
+        let url = document.getElementById("siteUrl")?.value.trim() || "";
+        const category = document.getElementById("siteCategory")?.value || "";
+        const description = document.getElementById("siteDescription")?.value.trim() || "";
+        const tagsInput = document.getElementById("siteTags")?.value.trim() || "";
 
         if (!title || !url) {
             alert("Kripya Title aur URL donon bharein!");
