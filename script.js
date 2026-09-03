@@ -20,6 +20,7 @@ const favoritesFilterBtn = document.getElementById("favoritesFilterBtn");
 const mobileWebMenuBtn = document.getElementById("mobileWebMenuBtn");
 const mobileWebMenu = document.getElementById("mobileWebMenu");
 const mobileMenuSearchInput = document.getElementById("mobileMenuSearchInput");
+const mobileMenuStatus = document.getElementById("mobileMenuStatus");
 const addWebsiteBtn = document.getElementById("addWebsiteBtn");
 const websiteModal = document.getElementById("websiteModal");
 const closeModalBtn = document.getElementById("closeModalBtn");
@@ -31,7 +32,36 @@ const toastEl = document.getElementById("toast");
 const marqueeText = document.getElementById("marqueeText");
 const btnSarkariView = document.getElementById("btnSarkariView");
 const btnCardView = document.getElementById("btnCardView");
-let currentView = "sarkari";
+const desktopTotalLinks = document.getElementById("desktopTotalLinks");
+const desktopFavoriteLinks = document.getElementById("desktopFavoriteLinks");
+const desktopNewLinks = document.getElementById("desktopNewLinks");
+const desktopVisitorCount = document.getElementById("desktopVisitorCount");
+const recentLinksList = document.getElementById("recentLinksList");
+const clearRecentLinks = document.getElementById("clearRecentLinks");
+const printPortalBtn = document.getElementById("printPortalBtn");
+const sharePortalBtn = document.getElementById("sharePortalBtn");
+const languageToggle = document.getElementById("languageToggle");
+const languageLabel = document.getElementById("languageLabel");
+const proMenuButton = document.getElementById("proMenuButton");
+const proToolsMenu = document.getElementById("proToolsMenu");
+const serviceRequestBtn = document.getElementById("serviceRequestBtn");
+const appointmentBtn = document.getElementById("appointmentBtn");
+const serviceModal = document.getElementById("serviceModal");
+const closeServiceModal = document.getElementById("closeServiceModal");
+const cancelServiceModal = document.getElementById("cancelServiceModal");
+const serviceForm = document.getElementById("serviceForm");
+const serviceModalTitle = document.getElementById("serviceModalTitle");
+let closeModalIfOpen = () => {};
+let currentView = localStorage.getItem("cse_view") || "sarkari";
+let currentLanguage = localStorage.getItem("cse_language") || "en";
+
+const translations = {
+    en: { subtitle: "Common Service Center Direct Links & Resources Portal", latestUpdates: "LATEST UPDATES", quickAccess: "QUICK ACCESS", popularSections: "Popular sections", results: "Results", jobs: "Jobs", biharBoard: "Bihar Board", aadhaar: "Aadhaar", directAccess: "DIRECT ACCESS", browseCategory: "Browse By Category", availableLinks: "Available CSE Links:", liveUpdates: "Live Portal Updates", proMenu: "CSC Pro Menu", whatsapp: "WhatsApp Enquiry", findCenter: "Find Center", qrCode: "Center QR Code", sharePortal: "Share Portal", callSupport: "Call Support", telegram: "Telegram", boxView: "Box View", cardsView: "Cards View" },
+    hi: { subtitle: "कॉमन सर्विस सेंटर के सभी जरूरी लिंक और संसाधन", latestUpdates: "नवीनतम अपडेट", quickAccess: "त्वरित पहुंच", popularSections: "लोकप्रिय सेक्शन", results: "रिजल्ट", jobs: "नौकरी", biharBoard: "बिहार बोर्ड", aadhaar: "आधार", directAccess: "सीधी पहुंच", browseCategory: "श्रेणी के अनुसार देखें", availableLinks: "उपलब्ध CSE लिंक:", liveUpdates: "लाइव पोर्टल अपडेट", proMenu: "CSC सेवा मेनू", whatsapp: "WhatsApp पूछताछ", findCenter: "केंद्र खोजें", qrCode: "केंद्र QR कोड", sharePortal: "पोर्टल शेयर करें", callSupport: "सहायता कॉल", telegram: "टेलीग्राम", boxView: "बॉक्स व्यू", cardsView: "कार्ड व्यू" }
+};
+const categoryTranslations = {
+    hi: { all: "सभी लिंक", coding: "कोडिंग", jobs: "नौकरी", learning: "पढ़ाई", webdev: "वेब डेवलपमेंट", ai: "AI और डेटा", tools: "टूल्स और क्लाउड", result: "रिजल्ट", government: "सरकारी सेवाएं", bihar: "बिहार बोर्ड", rtps: "RTPS सेवाएं", pan: "PAN कार्ड", aadhaar: "आधार / UIDAI" }
+};
 
 // Icon mapping helper for categories
 const categoryIcons = {
@@ -53,13 +83,34 @@ const categoryIcons = {
 
 // Initialize Application
 document.addEventListener("DOMContentLoaded", () => {
+    recordPortalVisit();
     loadThemePreference();
     loadWebsitesAndFavorites();
     renderMarqueeNotices();
     renderCategoryTabs();
     renderWebsites();
+    renderRecentLinks();
     setupEventListeners();
+    applyLanguage();
 });
+
+function recordPortalVisit() {
+    if (sessionStorage.getItem("cse_visit_recorded")) return;
+    const count = Number(localStorage.getItem("cse_visitor_count") || 0) + 1;
+    localStorage.setItem("cse_visitor_count", String(count));
+    sessionStorage.setItem("cse_visit_recorded", "true");
+}
+
+function applyLanguage() {
+    document.documentElement.lang = currentLanguage === "hi" ? "hi" : "en";
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+        element.textContent = translations[currentLanguage][element.dataset.i18n];
+    });
+    languageLabel.textContent = currentLanguage === "en" ? "हिंदी" : "English";
+    languageToggle.title = currentLanguage === "en" ? "Switch to Hindi" : "Switch to English";
+    languageToggle.setAttribute("aria-label", languageToggle.title);
+    renderCategoryTabs();
+}
 
 function renderMarqueeNotices() {
     if (!marqueeText || !Array.isArray(marqueeNotice)) return;
@@ -154,7 +205,7 @@ function renderCategoryTabs() {
         const iconClass = categoryIcons[catKey] || "fa-bookmark";
         tab.innerHTML = `
             <i class="fas ${iconClass}"></i>
-            <span>${categoryLabels[catKey]}</span>
+            <span>${categoryTranslations[currentLanguage]?.[catKey] || categoryLabels[catKey]}</span>
             <span class="count-badge">${count}</span>
         `;
 
@@ -201,6 +252,7 @@ function renderWebsites() {
     // Update stats counters
     visibleCountEl.textContent = filtered.length;
     totalCountEl.textContent = websites.length;
+    updateDesktopStats();
 
     renderSarkariBoxes(filtered);
 
@@ -293,8 +345,37 @@ function renderWebsites() {
             });
         }
 
+        card.querySelector(".btn-card-visit").addEventListener("click", () => rememberRecentLink(site));
+
         websiteGrid.appendChild(card);
     });
+}
+
+function updateDesktopStats() {
+    if (!desktopTotalLinks) return;
+    desktopTotalLinks.textContent = websites.length;
+    desktopFavoriteLinks.textContent = websites.filter(site => favorites.has(site.id)).length;
+    desktopNewLinks.textContent = websites.filter(site => site.isNew).length;
+    desktopVisitorCount.textContent = localStorage.getItem("cse_visitor_count") || "1";
+}
+
+function getRecentLinks() {
+    return JSON.parse(localStorage.getItem("cse_recent_links")) || [];
+}
+
+function rememberRecentLink(site) {
+    const recentLinks = getRecentLinks().filter(link => link.id !== site.id);
+    recentLinks.unshift({ id: site.id, title: site.title, url: site.url });
+    localStorage.setItem("cse_recent_links", JSON.stringify(recentLinks.slice(0, 5)));
+    renderRecentLinks();
+}
+
+function renderRecentLinks() {
+    if (!recentLinksList) return;
+    const recentLinks = getRecentLinks();
+    recentLinksList.innerHTML = recentLinks.length
+        ? recentLinks.map(link => `<a href="${escapeAttribute(link.url)}" target="_blank" rel="noopener noreferrer" title="${escapeAttribute(link.title)}"><i class="fas fa-arrow-up-right-from-square"></i><span>${escapeHTML(link.title)}</span></a>`).join("")
+        : '<span class="recent-empty">Abhi koi recent link nahi hai</span>';
 }
 
 function renderSarkariBoxes(filtered) {
@@ -351,6 +432,7 @@ function createSarkariLink(site) {
     `;
 
     item.querySelector(".btn-star-mini").addEventListener("click", () => toggleFavorite(site));
+    item.querySelector(".link-left-content").addEventListener("click", () => rememberRecentLink(site));
     const deleteButton = item.querySelector(".btn-delete-mini");
     if (deleteButton) {
         deleteButton.addEventListener("click", () => {
@@ -376,11 +458,14 @@ function toggleFavorite(site) {
 
 function setView(view) {
     currentView = view;
+    localStorage.setItem("cse_view", view);
     const showSarkari = view === "sarkari";
     sarkariBoxGrid.classList.toggle("hidden", !showSarkari);
     websiteGrid.classList.toggle("hidden", showSarkari);
     btnSarkariView.classList.toggle("active", showSarkari);
     btnCardView.classList.toggle("active", !showSarkari);
+    btnSarkariView.setAttribute("aria-pressed", String(showSarkari));
+    btnCardView.setAttribute("aria-pressed", String(!showSarkari));
 }
 
 // Icon mapper for website card
@@ -483,12 +568,16 @@ function setupEventListeners() {
     mobileWebMenu?.querySelectorAll("[data-menu-action]").forEach(button => {
         button.addEventListener("click", () => {
             const action = button.dataset.menuAction;
+            const actionNames = { box: "Box View", cards: "Card View", favorites: "Favorites", theme: "Theme", categories: "Categories", quick: "Quick Access" };
             if (action === "box") btnSarkariView.click();
             if (action === "cards") btnCardView.click();
             if (action === "favorites") favoritesFilterBtn.click();
             if (action === "theme") themeToggleBtn.click();
             if (action === "categories") mobileCategoryToggle?.click();
             if (action === "quick") mobileQuickToggle?.click();
+            mobileWebMenu.querySelectorAll("[data-menu-action]").forEach(item => item.classList.toggle("active", item === button));
+            if (mobileMenuStatus) mobileMenuStatus.querySelector("span").textContent = `${currentLanguage === "hi" ? "सक्रिय" : "Active"}: ${actionNames[action]}`;
+            showToast(`${currentLanguage === "hi" ? "चालू किया गया" : "Applied"}: ${actionNames[action]}`);
             mobileWebMenu.classList.remove("is-open");
             mobileWebMenuBtn.setAttribute("aria-expanded", "false");
         });
@@ -498,6 +587,88 @@ function setupEventListeners() {
         searchInput.value = event.target.value;
         searchQuery = event.target.value;
         renderWebsites();
+    });
+
+    clearRecentLinks?.addEventListener("click", () => {
+        localStorage.removeItem("cse_recent_links");
+        renderRecentLinks();
+        showToast("Recent links clear ho gaye");
+    });
+
+    printPortalBtn?.addEventListener("click", () => window.print());
+
+    sharePortalBtn?.addEventListener("click", async () => {
+        const shareData = {
+            title: document.title,
+            text: "CSC Digital Seva Kendra Bahauri ke useful links",
+            url: window.location.href
+        };
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else if (navigator.clipboard) {
+            await navigator.clipboard.writeText(window.location.href);
+            showToast("Portal link copy ho gaya");
+        }
+    });
+
+    proMenuButton?.addEventListener("click", () => {
+        const isOpen = proToolsMenu.classList.toggle("is-open");
+        proMenuButton.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    languageToggle?.addEventListener("click", () => {
+        currentLanguage = currentLanguage === "en" ? "hi" : "en";
+        localStorage.setItem("cse_language", currentLanguage);
+        applyLanguage();
+        showToast(currentLanguage === "hi" ? "भाषा हिंदी में बदल गई" : "Language changed to English");
+    });
+
+    document.addEventListener("click", event => {
+        if (!event.target.closest(".pro-tools-bar") && proToolsMenu?.classList.contains("is-open")) {
+            proToolsMenu.classList.remove("is-open");
+            proMenuButton.setAttribute("aria-expanded", "false");
+        }
+    });
+
+    const openServiceModal = (appointment = false) => {
+        if (!serviceModal) return;
+        serviceModalTitle.textContent = appointment ? "Book CSC Appointment" : "CSC Service Request";
+        serviceModal.classList.add("active");
+        document.getElementById("customerName")?.focus();
+    };
+    const closeServiceRequest = () => serviceModal?.classList.remove("active");
+    serviceRequestBtn?.addEventListener("click", () => openServiceModal(false));
+    appointmentBtn?.addEventListener("click", () => openServiceModal(true));
+    closeServiceModal?.addEventListener("click", closeServiceRequest);
+    cancelServiceModal?.addEventListener("click", closeServiceRequest);
+    serviceModal?.addEventListener("click", event => {
+        if (event.target === serviceModal) closeServiceRequest();
+    });
+    serviceForm?.addEventListener("submit", event => {
+        event.preventDefault();
+        const name = document.getElementById("customerName").value.trim();
+        const mobile = document.getElementById("customerMobile").value.trim();
+        const service = document.getElementById("requestedService").value;
+        const appointmentDate = document.getElementById("appointmentDate").value;
+        const appointmentTime = document.getElementById("appointmentTime").value;
+        const message = document.getElementById("serviceMessage").value.trim();
+        const whatsappMessage = `Namaste, CSC service request.%0AName: ${encodeURIComponent(name)}%0AMobile: ${encodeURIComponent(mobile)}%0AService: ${encodeURIComponent(service)}%0ADate: ${encodeURIComponent(appointmentDate || "Not selected")}%0ATime: ${encodeURIComponent(appointmentTime || "Not selected")}%0AMessage: ${encodeURIComponent(message || "N/A")}`;
+        localStorage.setItem("cse_last_request", JSON.stringify({ name, mobile, service, appointmentDate, appointmentTime, message, createdAt: new Date().toISOString() }));
+        window.open(`https://wa.me/919608696210?text=${whatsappMessage}`, "_blank", "noopener,noreferrer");
+        closeServiceRequest();
+        serviceForm.reset();
+        showToast("Request WhatsApp par bhejne ke liye khul gaya");
+    });
+
+    document.addEventListener("keydown", event => {
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+            event.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        }
+        if (event.key === "Escape" && websiteModal?.classList.contains("active")) {
+            closeModalIfOpen();
+        }
     });
 
     // Modal support remains optional for future admin-only builds.
@@ -514,6 +685,8 @@ function setupEventListeners() {
         websiteModal.classList.remove("active");
         addWebsiteForm.reset();
     };
+
+    closeModalIfOpen = closeModal;
 
     closeModalBtn.addEventListener("click", closeModal);
     cancelModalBtn.addEventListener("click", closeModal);
