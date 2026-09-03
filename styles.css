@@ -800,7 +800,6 @@ button, .sarkari-link-item, .card { -webkit-user-select: none; user-select: none
 /* Clickable latest updates */
 .marquee-content { overflow: hidden; color: #dcecff; background: #101f35; }
 .marquee-track { display: flex; align-items: center; gap: 16px; width: max-content; min-width: 100%; animation: updates-scroll 32s linear infinite; }
-.marquee-track:hover { animation-play-state: paused; }
 .update-link { display: inline-flex; align-items: center; gap: 7px; color: #a9ccff; text-decoration: none; white-space: nowrap; transition: color .2s ease; }
 .update-link:hover { color: #fff; text-decoration: underline; }
 .update-type { padding: 2px 5px; color: #fff; background: #e5484d; border-radius: 3px; font-size: .62rem; font-weight: 800; }
@@ -975,7 +974,6 @@ button, .sarkari-link-item, .card { -webkit-user-select: none; user-select: none
 .marquee-content { max-height: none; overflow: hidden; }
 .marquee-track { display: flex; flex-wrap: nowrap; width: max-content; min-width: 100%; animation: updates-scroll 55s linear infinite; }
 .update-link { white-space: nowrap; }
-.marquee-track:hover { animation-play-state: paused; }
 @keyframes updates-scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
