@@ -39,7 +39,7 @@
                     </div>
                     <div>
                         <h1 class="vip-title">CSC DIGITAL SEVA KENDRA</h1>
-                        <p class="vip-subtitle">Common Service Center Direct Links &amp; Resources Portal</p>
+                        <p class="vip-subtitle" data-i18n="subtitle">Common Service Center Direct Links &amp; Resources Portal</p>
                         <p class="vip-owner">CSC OWNER - Mr. Dharmendra Kumar</p>
                     </div>
                 </div>
@@ -49,12 +49,13 @@
         <!-- Marquee Ticker Banner -->
         <div class="marquee-wrapper">
             <div class="updates-topbar">
-                <div class="marquee-badge"><i class="fas fa-bullhorn"></i> LATEST UPDATES</div>
+                <div class="marquee-badge"><i class="fas fa-bullhorn"></i> <span data-i18n="latestUpdates">LATEST UPDATES</span></div>
                 <button class="mobile-web-menu-btn" id="mobileWebMenuBtn" type="button" aria-expanded="false" aria-controls="mobileWebMenu">
                     <i class="fas fa-bars"></i><span>Web Menu</span>
                 </button>
                 <div class="mobile-web-menu" id="mobileWebMenu" aria-label="Web menu">
                     <label class="mobile-menu-search"><i class="fas fa-search"></i><input id="mobileMenuSearchInput" type="search" placeholder="Search links..."></label>
+                    <div class="mobile-menu-status" id="mobileMenuStatus"><i class="fas fa-circle-check"></i><span>Ready: Box View</span></div>
                     <button type="button" data-menu-action="box"><i class="fas fa-table-cells-large"></i><span>Box View</span></button>
                     <button type="button" data-menu-action="cards"><i class="fas fa-table-columns"></i><span>Card View</span></button>
                     <button type="button" data-menu-action="favorites"><i class="fas fa-star"></i><span>Favorites</span></button>
@@ -67,25 +68,6 @@
                 <div class="marquee-track" id="marqueeText" aria-label="Latest clickable updates"></div>
             </div>
         </div>
-
-        <section class="contact-strip" aria-label="Contact details">
-            <div class="contact-details">
-                <div class="contact-intro">
-                    <span class="contact-kicker"><i class="fas fa-headset"></i> Connect With Us</span>
-                    <strong>अधिक जानकारी के लिए संपर्क करें</strong>
-                </div>
-                <div class="contact-actions">
-                    <a class="contact-action telegram-action" href="https://t.me/csehubowner" target="_blank" rel="noopener noreferrer" title="Join our Telegram group">
-                        <i class="fab fa-telegram-plane"></i>
-                        <span><small>Telegram</small><b>Join Group</b></span>
-                    </a>
-                    <a class="contact-action phone-action" href="tel:+919608696210" title="Call us between 10 AM to 6 PM">
-                        <i class="fas fa-phone"></i>
-                        <span><small>Call Us</small><b>Contact number</b></span>
-                    </a>
-                </div>
-            </div>
-        </section>
 
         <!-- Navbar -->
         <header class="navbar">
@@ -101,12 +83,24 @@
 
             <!-- Right Side Controls -->
             <div class="nav-right">
+                <button class="language-toggle" id="languageToggle" type="button" title="Switch to Hindi" aria-label="Switch to Hindi"><i class="fas fa-language"></i><span id="languageLabel">हिंदी</span></button>
                 <button class="btn-icon" id="favoritesFilterBtn" title="Favorites Links">
                     <i class="fas fa-star"></i>
                 </button>
                 <button class="btn-icon" id="themeToggleBtn" title="Toggle Light/Dark Theme">
                     <i class="fas fa-sun"></i>
                 </button>
+                <div class="pro-tools-bar header-pro-menu" aria-label="CSC Pro tools">
+                    <button class="pro-menu-button" id="proMenuButton" type="button" aria-expanded="false" aria-controls="proToolsMenu"><i class="fas fa-toolbox"></i><span data-i18n="proMenu">CSC Pro Menu</span><i class="fas fa-chevron-down"></i></button>
+                    <div class="pro-tool-actions" id="proToolsMenu">
+                        <a class="pro-tool pro-tool-whatsapp" href="https://wa.me/919608696210?text=Namaste%2C%20mujhe%20CSC%20service%20ke%20baare%20mein%20jankari%20chahiye" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i><span data-i18n="whatsapp">WhatsApp Enquiry</span></a>
+                        <a class="pro-tool" href="https://www.google.com/maps/search/?api=1&query=Bahauri%2C%20Motihari%2C%20Bihar%20845431" target="_blank" rel="noopener noreferrer"><i class="fas fa-location-dot"></i><span data-i18n="findCenter">Find Center</span></a>
+                        <a class="pro-tool" href="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fwww.google.com%2Fmaps%2Fsearch%2F%3Fapi%3D1%26query%3DBahauri%252C%2520Motihari%252C%2520Bihar%2520845431" target="_blank" rel="noopener noreferrer"><i class="fas fa-qrcode"></i><span data-i18n="qrCode">Center QR Code</span></a>
+                        <button class="pro-tool" id="sharePortalBtn" type="button"><i class="fas fa-share-nodes"></i><span data-i18n="sharePortal">Share Portal</span></button>
+                        <a class="pro-tool" href="tel:+919608696210"><i class="fas fa-phone"></i><span data-i18n="callSupport">Call Support</span></a>
+                        <a class="pro-tool" href="https://t.me/csehubowner" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i><span data-i18n="telegram">Telegram</span></a>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -127,11 +121,11 @@
             <!-- Controls Bar -->
             <div class="controls-bar">
                 <div class="view-toggle-group">
-                    <button class="btn-toggle-view active" id="btnSarkariView" title="Sarkari Result Box Layout">
-                        <i class="fas fa-table-cells-large"></i> Box View
+                    <button class="btn-toggle-view active" id="btnSarkariView" type="button" aria-pressed="true" title="Sarkari Result Box Layout">
+                        <i class="fas fa-table-cells-large"></i> <span data-i18n="boxView">Box View</span>
                     </button>
-                    <button class="btn-toggle-view" id="btnCardView" title="Detailed Cards View">
-                        <i class="fas fa-table-columns"></i> Cards View
+                    <button class="btn-toggle-view" id="btnCardView" type="button" aria-pressed="false" title="Detailed Cards View">
+                        <i class="fas fa-table-columns"></i> <span data-i18n="cardsView">Cards View</span>
                     </button>
                 </div>
                 <span class="status-badge"><i class="fas fa-lock"></i> Domain Controlled</span>
@@ -142,20 +136,20 @@
             <button type="button" class="mobile-quick-toggle" id="mobileQuickToggle" aria-expanded="false">
                 <i class="fas fa-bolt"></i> Quick Access
             </button>
-            <div class="quick-access-heading"><span class="section-kicker">QUICK ACCESS</span><strong>Popular sections</strong></div>
+            <div class="quick-access-heading"><span class="section-kicker" data-i18n="quickAccess">QUICK ACCESS</span><strong data-i18n="popularSections">Popular sections</strong></div>
             <div class="quick-access-links">
-                <button class="quick-access-link quick-result" data-category="result"><i class="fas fa-square-poll-vertical"></i><span>Results</span></button>
-                <button class="quick-access-link quick-jobs" data-category="jobs"><i class="fas fa-briefcase"></i><span>Jobs</span></button>
-                <button class="quick-access-link quick-bihar" data-category="bihar"><i class="fas fa-school"></i><span>Bihar Board</span></button>
-                <button class="quick-access-link quick-aadhaar" data-category="aadhaar"><i class="fas fa-id-card"></i><span>Aadhaar</span></button>
+                <button class="quick-access-link quick-result" data-category="result"><i class="fas fa-square-poll-vertical"></i><span data-i18n="results">Results</span></button>
+                <button class="quick-access-link quick-jobs" data-category="jobs"><i class="fas fa-briefcase"></i><span data-i18n="jobs">Jobs</span></button>
+                <button class="quick-access-link quick-bihar" data-category="bihar"><i class="fas fa-school"></i><span data-i18n="biharBoard">Bihar Board</span></button>
+                <button class="quick-access-link quick-aadhaar" data-category="aadhaar"><i class="fas fa-id-card"></i><span data-i18n="aadhaar">Aadhaar</span></button>
             </div>
         </section>
 
         <!-- Category Tabs -->
         <div class="category-heading">
             <div>
-                <span class="section-kicker">DIRECT ACCESS</span>
-                <h2>Browse By Category</h2>
+                <span class="section-kicker" data-i18n="directAccess">DIRECT ACCESS</span>
+                <h2 data-i18n="browseCategory">Browse By Category</h2>
             </div>
             <button type="button" class="mobile-category-toggle" id="mobileCategoryToggle" aria-expanded="false">
                 <i class="fas fa-bars"></i> Categories
@@ -169,10 +163,10 @@
         <!-- Stats Counter -->
         <div class="stats-bar">
             <div class="stats-count">
-                Available CSE Links: <span id="visibleCount">0</span> / <span id="totalCount">0</span>
+                <span data-i18n="availableLinks">Available CSE Links:</span> <span id="visibleCount">0</span> / <span id="totalCount">0</span>
             </div>
             <div class="quick-info">
-                <span class="pulse-dot"></span> Live Portal Updates
+                <span class="pulse-dot"></span> <span data-i18n="liveUpdates">Live Portal Updates</span>
             </div>
         </div>
 
@@ -186,7 +180,18 @@
             <!-- Dynamically populated website cards -->
         </main>
 
+        <section class="desktop-dashboard" aria-label="CSC dashboard">
+            <div class="desktop-stat-card desktop-stat-total"><span class="desktop-stat-icon"><i class="fas fa-link"></i></span><span><small>Total Links</small><strong id="desktopTotalLinks">0</strong></span></div>
+            <div class="desktop-stat-card desktop-stat-favorite"><span class="desktop-stat-icon"><i class="fas fa-star"></i></span><span><small>Favorites</small><strong id="desktopFavoriteLinks">0</strong></span></div>
+            <div class="desktop-stat-card desktop-stat-new"><span class="desktop-stat-icon"><i class="fas fa-bolt"></i></span><span><small>New Updates</small><strong id="desktopNewLinks">0</strong></span></div>
+            <div class="desktop-stat-card desktop-stat-visitors"><span class="desktop-stat-icon"><i class="fas fa-users"></i></span><span><small>Portal Visitors</small><strong id="desktopVisitorCount">0</strong></span></div>
+            <div class="desktop-recent-panel"><div class="desktop-panel-heading"><span><i class="fas fa-clock-rotate-left"></i> Recent Links</span><button id="clearRecentLinks" type="button" title="Clear recent links"><i class="fas fa-trash-can"></i></button></div><div id="recentLinksList" class="recent-links-list"><span class="recent-empty">Abhi koi recent link nahi hai</span></div></div>
+        </section>
+
+        <footer class="site-footer"><div class="footer-main"><div class="footer-about"><span class="footer-brand"><i class="fas fa-building-columns"></i> CSC DIGITAL SEVA KENDRA</span><p>सरकारी योजनाओं, certificates, Aadhaar, PAN और digital services के लिए trusted service point.</p></div><div class="footer-column"><h3>Center Details</h3><span><i class="fas fa-location-dot"></i> Bahauri, Motihari, Bihar - 845431</span><span><i class="fas fa-clock"></i> Monday - Saturday, 10 AM - 6 PM</span></div><div class="footer-column"><h3>Connect With Us</h3><a href="tel:+919608696210"><i class="fas fa-phone"></i> +91 96086 96210</a><a href="https://wa.me/919608696210" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp Support</a></div></div><div class="footer-bottom"><span>© 2026 CSC Digital Seva Kendra Bahauri. All Rights Reserved.</span><span>Digital India Service Center</span></div></footer>
+
     </div>
+
 
     <!-- Modal for Adding Custom Website -->
     <div class="modal-overlay" id="websiteModal">
