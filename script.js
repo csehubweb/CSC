@@ -33,6 +33,26 @@ const btnSarkariView = document.getElementById("btnSarkariView");
 const btnCardView = document.getElementById("btnCardView");
 let currentView = "sarkari";
 
+// Default data structures (in case external dependencies fail)
+const marqueeNotice = typeof marqueeNotice !== "undefined" ? marqueeNotice : [];
+const categoryLabels = typeof categoryLabels !== "undefined" ? categoryLabels : {
+    all: "All Categories",
+    coding: "Coding",
+    webdev: "Web Dev",
+    learning: "Learning",
+    ai: "AI",
+    tools: "Tools",
+    jobs: "Jobs",
+    result: "Results",
+    government: "Government",
+    bihar: "Bihar",
+    aadhaar: "Aadhaar",
+    pan: "PAN",
+    rtps: "RTPS"
+};
+const sarkariBoxConfig = typeof sarkariBoxConfig !== "undefined" ? sarkariBoxConfig : [];
+const initialWebsites = typeof initialWebsites !== "undefined" ? initialWebsites : [];
+
 // Icon mapping helper for categories
 const categoryIcons = {
     all: "fa-border-all",
@@ -61,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function renderMarqueeNotices() {
-    if (!marqueeText || !Array.isArray(marqueeNotice)) return;
+    if (!marqueeText || !Array.isArray(marqueeNotice) || marqueeNotice.length === 0) return;
 
     marqueeText.innerHTML = marqueeNotice.map((notice, index) => `
         <a class="update-link" href="${escapeAttribute(notice.url)}" target="_blank" rel="noopener noreferrer">
@@ -79,7 +99,9 @@ function loadThemePreference() {
 }
 
 function updateThemeIcon(theme) {
+    if (!themeToggleBtn) return;
     const icon = themeToggleBtn.querySelector("i");
+    if (!icon) return;
     if (theme === "light") {
         icon.className = "fas fa-moon";
     } else {
@@ -457,10 +479,10 @@ function setupEventListeners() {
     });
 
     // Theme toggle
-    themeToggleBtn.addEventListener("click", toggleTheme);
+    themeToggleBtn?.addEventListener("click", toggleTheme);
 
     // Favorites filter toggle
-    favoritesFilterBtn.addEventListener("click", () => {
+    favoritesFilterBtn?.addEventListener("click", () => {
         showFavoritesOnly = !showFavoritesOnly;
         if (showFavoritesOnly) {
             favoritesFilterBtn.style.background = "#f59e0b";
@@ -483,8 +505,8 @@ function setupEventListeners() {
             const action = button.dataset.menuAction;
             if (action === "box") btnSarkariView.click();
             if (action === "cards") btnCardView.click();
-            if (action === "favorites") favoritesFilterBtn.click();
-            if (action === "theme") themeToggleBtn.click();
+            if (action === "favorites") favoritesFilterBtn?.click();
+            if (action === "theme") themeToggleBtn?.click();
             if (action === "categories") mobileCategoryToggle?.click();
             if (action === "quick") mobileQuickToggle?.click();
             mobileWebMenu.classList.remove("is-open");
@@ -565,7 +587,9 @@ function setupEventListeners() {
 
 // Show Toast notification
 function showToast(message) {
+    if (!toastEl) return;
     const toastMsg = toastEl.querySelector(".toast-message");
+    if (!toastMsg) return;
     toastMsg.textContent = message;
     toastEl.classList.add("show");
 
