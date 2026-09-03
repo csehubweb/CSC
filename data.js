@@ -355,6 +355,28 @@ const initialWebsites = [
         description: "Download Aadhaar, check status, update details, and use online Aadhaar services.",
         tags: ["Aadhaar", "Online Service"],
         isNew: false
+    },
+    //RTPS Services
+    {
+        id: "39",
+        title: "RTPS Services",
+        url: "https://rtps.gov.in/",
+        category: "rtps",
+        description: "Official RTPS portal for various government services and information.",
+        tags: ["RTPS", "Government"],
+        isNew: true,
+        badgeText: "OFFICIAL"
+    },
+    //PAN Card Services
+    {
+        id: "40",
+        title: "PAN Card Services",
+        url: "https://pancard.gov.in/",
+        category: "pan",
+        description: "Official PAN card portal for application, updates, and citizen services.",
+        tags: ["PAN Card", "Tax"],
+        isNew: true,
+        badgeText: "OFFICIAL"
     }
 ];
 
@@ -369,6 +391,8 @@ const categoryLabels = {
     result: "Results & Admit Cards",
     government: "Government Services",
     bihar: "Bihar Board",
+    rtps: "RTPS Services",
+    pan: "PAN Card Services",
     aadhaar: "Aadhaar / UIDAI"
 };
 
@@ -426,6 +450,18 @@ const sarkariBoxConfig = [
         title: "BIHAR BOARD (बिहार बोर्ड)",
         headerBg: "linear-gradient(135deg, #92400e 0%, #f59e0b 100%)",
         borderColor: "#f59e0b"
+    },
+    {
+        category: "rtps",
+        title: "RTPS SERVICES (RTPS सेवाएँ)",
+        headerBg: "linear-gradient(135deg, #0f172a 0%, #334155 100%)",
+        borderColor: "#334155"
+    },
+    {
+        category: "pan",
+        title: "PAN CARD SERVICES (पैन कार्ड सेवाएँ)",
+        headerBg: "linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)",
+        borderColor: "#3b82f6"
     },
     {
         category: "aadhaar",
