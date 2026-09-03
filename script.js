@@ -45,7 +45,10 @@ const categoryIcons = {
     result: "fa-square-poll-vertical",
     government: "fa-building-columns",
     bihar: "fa-school",
-    aadhaar: "fa-id-card"
+    aadhaar: "fa-id-card",
+    rtps: "fa-file-lines",
+    pan: "fa-certificate",
+    others: "fa-globe"
 };
 
 // Initialize Application
@@ -392,6 +395,8 @@ function getIconForSite(site) {
     if (site.category === "government") return "fa-building-columns";
     if (site.category === "bihar") return "fa-school";
     if (site.category === "aadhaar") return "fa-id-card";
+    if (site.category === "pan") return "fa-certificate";
+    if (site.category === "rtps") return "fa-file-lines";
     return "fa-globe";
 }
 
