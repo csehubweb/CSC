@@ -360,7 +360,7 @@ const initialWebsites = [
     {
         id: "39",
         title: "RTPS Services",
-        url: "https://rtps.gov.in/",
+        url: "https://serviceonline.bihar.gov.in/",
         category: "rtps",
         description: "Official RTPS portal for various government services and information.",
         tags: ["RTPS", "Government"],
@@ -371,7 +371,7 @@ const initialWebsites = [
     {
         id: "40",
         title: "PAN Card Services",
-        url: "https://pancard.gov.in/",
+        url: "https://www.pan.utiitsl.com/PAN/",
         category: "pan",
         description: "Official PAN card portal for application, updates, and citizen services.",
         tags: ["PAN Card", "Tax"],
