@@ -367,17 +367,120 @@ const initialWebsites = [
         isNew: true,
         badgeText: "OFFICIAL"
     },
+    {
+        id: "48",
+        title: "RTPS Application Status",
+        url: "https://serviceonline.bihar.gov.in/officials/citizenApplication.html",
+        category: "rtps",
+        description: "Check the status of your RTPS application.",
+        tags: ["RTPS", "Government"],
+        isNew: false,
+        badgeText: "OFFICIAL"
+    },
+    {
+        id: "49",
+        title: "Download RTPS Certificates",
+        url: "https://swcs.bihar.gov.in/RtpsReportView/certificate_download.jsp",
+        category: "rtps",
+        description: "Download your RTPS certificates in PDF format.",
+        tags: ["RTPS", "Government"],
+        isNew: false,
+        badgeText: "OFFICIAL"
+    },
     //PAN Card Services
     {
         id: "40",
-        title: "PAN Card Services",
-        url: "https://www.pan.utiitsl.com/PAN/",
+        title: "PAN Card Official Portal",
+        url: "https://tinpan.proteantech.in/",
         category: "pan",
         description: "Official PAN card portal for application, updates, and citizen services.",
-        tags: ["PAN Card", "Tax"],
+        tags: ["ProteanTech", "Tax"],
         isNew: true,
         badgeText: "OFFICIAL"
-    }
+    },
+    {
+        id: "41",
+        title: "Download PAN Card ",
+        url: "https://onlineservices.proteantech.in/paam/requestAndDownloadEPAN.html",
+        category: "pan",
+        description: "Download your PAN card in PDF format using your PAN number and date of birth.",
+        tags: ["ProteanTech", "PAN Card", ""],
+        isNew: false,
+        badgeText: "PROTEANTECH"
+    },
+    {
+        id: "42",
+        title: "Apply for PAN Card",
+        url: "https://onlineservices.proteantech.in/paam/endUserRegisterContact.html",
+        category: "pan",
+        description: "Apply for PAN card, updates, and citizen services.",
+        tags: ["ProteanTech", "PAN Card", "Tax"],
+        isNew: false,
+        badgeText: "PROTEANTECH"
+    },
+    {
+        id: "43",
+        title: "Status Tracking for PAN Card",
+        url: "https://tin.tin.proteantech.in/pantan/StatusTrack.html",
+        category: "pan",
+        description: "Track the status of your PAN card application with ProteanTech.",
+        tags: ["ProteanTech", "Tax"],
+        isNew: false,
+        badgeText: "PROTEANTECH"
+    },
+    //Voter ID Services
+    {
+        id: "44",
+        title: "Voter ID Services",
+        url: "https://www.eci.gov.in/",
+        category: "voter",
+        description: "Official portal for Voter ID services and information.",
+        tags: ["Election Commission", "Voter Services"],
+        isNew: true,
+        badgeText: "OFFICIAL"
+    },
+    {
+        id: "45",
+        title: "New Voter ID Registration",
+        url: "https://voters.eci.gov.in/form6",
+        category: "voter",
+        description: "Register for a new Voter ID.",
+        tags: ["Election Commission", "Voter Services"],
+        isNew: false,
+        badgeText: "VOTER"
+    },
+    {
+        id: "46",
+        title: "Track Voter ID Application Status",
+        url: "https://voters.eci.gov.in/home/track",
+        category: "voter",
+        description: "Track the status of your Voter ID application.",
+        tags: ["Election Commission", "Voter Services"],
+        isNew: false,
+        badgeText: "VOTER"
+    },
+    {   
+        id: "47",
+        title: "Voter ID Correction Services",
+        url: "https://voters.eci.gov.in/form8",
+        category: "voter",
+        description: "Apply for corrections in your Voter ID details.",
+        tags: ["Election Commission", "Voter Services"],
+        isNew: true,
+        badgeText: "OFFICIAL"
+    },
+
+    {
+        id: "55",
+        title: "Voter ID Election Results",
+        url: "https://results.eci.gov.in/",
+        category: "voter",
+        description: "Check the election results for your Voter ID.",
+        tags: ["Election Commission", "Voter Services"],
+        isNew: false,
+        badgeText: "VOTER"
+    },
+
 ];
 
 const categoryLabels = {
@@ -393,7 +496,8 @@ const categoryLabels = {
     bihar: "Bihar Board",
     rtps: "RTPS Services",
     pan: "PAN Card Services",
-    aadhaar: "Aadhaar / UIDAI"
+    aadhaar: "Aadhaar / UIDAI",
+    voter: "Voter ID Services"
 };
 
 const sarkariBoxConfig = [
@@ -468,6 +572,12 @@ const sarkariBoxConfig = [
         title: "AADHAAR / UIDAI (आधार सेवा)",
         headerBg: "linear-gradient(135deg, #4338ca 0%, #6366f1 100%)",
         borderColor: "#6366f1"
+    },
+    {
+        category: "voter",
+        title: "VOTER ID SERVICES (मतदाता पहचान सेवाएँ)",
+        headerBg: "linear-gradient(135deg, #f1f11f 0%, #398d24 100%)",
+        borderColor: "#d2b216"
     }
 ];
 
