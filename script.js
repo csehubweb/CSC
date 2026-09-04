@@ -77,7 +77,8 @@ const categoryIcons = {
     bihar: "fa-school",
     aadhaar: "fa-id-card",
     rtps: "fa-file-lines",
-    pan: "fa-certificate",
+    pan: "fa-id-card-clip", // Using a generic certificate icon for PAN
+    voter: "fa-person-booth",
     others: "fa-globe"
 };
 
@@ -480,8 +481,9 @@ function getIconForSite(site) {
     if (site.category === "government") return "fa-building-columns";
     if (site.category === "bihar") return "fa-school";
     if (site.category === "aadhaar") return "fa-id-card";
-    if (site.category === "pan") return "fa-certificate";
+    if (site.category === "pan") return "fa-id-card-clip"; // Using a generic certificate icon for PAN
     if (site.category === "rtps") return "fa-file-lines";
+    if (site.category === "voter") return "fa-person-booth";
     return "fa-globe";
 }
 
