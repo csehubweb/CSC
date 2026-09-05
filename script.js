@@ -21,7 +21,6 @@ function openRtpsStatus() {
 }
 
 // DOM Elements
-const websiteGrid = document.getElementById("websiteGrid");
 const sarkariBoxGrid = document.getElementById("sarkariBoxGrid");
 const categoryTabsContainer = document.getElementById("categoryTabs");
 const searchInput = document.getElementById("searchInput");
@@ -45,8 +44,6 @@ const visibleCountEl = document.getElementById("visibleCount");
 const totalCountEl = document.getElementById("totalCount");
 const toastEl = document.getElementById("toast");
 const marqueeText = document.getElementById("marqueeText");
-const btnSarkariView = document.getElementById("btnSarkariView");
-const btnCardView = document.getElementById("btnCardView");
 const desktopTotalLinks = document.getElementById("desktopTotalLinks");
 const desktopFavoriteLinks = document.getElementById("desktopFavoriteLinks");
 const desktopNewLinks = document.getElementById("desktopNewLinks");
@@ -67,12 +64,11 @@ const cancelServiceModal = document.getElementById("cancelServiceModal");
 const serviceForm = document.getElementById("serviceForm");
 const serviceModalTitle = document.getElementById("serviceModalTitle");
 let closeModalIfOpen = () => {};
-let currentView = localStorage.getItem("cse_view") || "sarkari";
 let currentLanguage = localStorage.getItem("cse_language") || "en";
 
 const translations = {
-    en: { subtitle: "Common Service Center Direct Links & Resources Portal", latestUpdates: "LATEST UPDATES", quickAccess: "QUICK ACCESS", popularSections: "Popular sections", results: "Results", jobs: "Jobs", biharBoard: "Bihar Board", aadhaar: "Aadhaar", directAccess: "DIRECT ACCESS", browseCategory: "Browse By Category", availableLinks: "Available CSE Links:", liveUpdates: "Live Portal Updates", proMenu: "CSC Pro Menu", whatsapp: "WhatsApp Enquiry", findCenter: "Find Center", qrCode: "Center QR Code", sharePortal: "Share Portal", callSupport: "Call Support", telegram: "Telegram", boxView: "Box View", cardsView: "Cards View" },
-    hi: { subtitle: "कॉमन सर्विस सेंटर के सभी जरूरी लिंक और संसाधन", latestUpdates: "नवीनतम अपडेट", quickAccess: "त्वरित पहुंच", popularSections: "लोकप्रिय सेक्शन", results: "रिजल्ट", jobs: "नौकरी", biharBoard: "बिहार बोर्ड", aadhaar: "आधार", directAccess: "सीधी पहुंच", browseCategory: "श्रेणी के अनुसार देखें", availableLinks: "उपलब्ध CSE लिंक:", liveUpdates: "लाइव पोर्टल अपडेट", proMenu: "CSC सेवा मेनू", whatsapp: "WhatsApp पूछताछ", findCenter: "केंद्र खोजें", qrCode: "केंद्र QR कोड", sharePortal: "पोर्टल शेयर करें", callSupport: "सहायता कॉल", telegram: "टेलीग्राम", boxView: "बॉक्स व्यू", cardsView: "कार्ड व्यू" }
+    en: { subtitle: "Common Service Center Direct Links & Resources Portal", latestUpdates: "LATEST UPDATES", quickAccess: "QUICK ACCESS", popularSections: "Popular sections", results: "Results", jobs: "Jobs", biharBoard: "Bihar Board", aadhaar: "Aadhaar", directAccess: "DIRECT ACCESS", browseCategory: "Browse By Category", availableLinks: "Available CSE Links:", liveUpdates: "Live Portal Updates", proMenu: "CSC Pro Menu", whatsapp: "WhatsApp Enquiry", findCenter: "Find Center", qrCode: "Center QR Code", sharePortal: "Share Portal", callSupport: "Call Support", telegram: "Telegram" },
+    hi: { subtitle: "कॉमन सर्विस सेंटर के सभी जरूरी लिंक और संसाधन", latestUpdates: "नवीनतम अपडेट", quickAccess: "त्वरित पहुंच", popularSections: "लोकप्रिय सेक्शन", results: "रिजल्ट", jobs: "नौकरी", biharBoard: "बिहार बोर्ड", aadhaar: "आधार", directAccess: "सीधी पहुंच", browseCategory: "श्रेणी के अनुसार देखें", availableLinks: "उपलब्ध CSE लिंक:", liveUpdates: "लाइव पोर्टल अपडेट", proMenu: "CSC सेवा मेनू", whatsapp: "WhatsApp पूछताछ", findCenter: "केंद्र खोजें", qrCode: "केंद्र QR कोड", sharePortal: "पोर्टल शेयर करें", callSupport: "सहायता कॉल", telegram: "टेलीग्राम" }
 };
 const categoryTranslations = {
     hi: { all: "सभी लिंक", coding: "कोडिंग", jobs: "नौकरी", learning: "पढ़ाई", webdev: "वेब डेवलपमेंट", ai: "AI और डेटा", tools: "टूल्स और क्लाउड", result: "रिजल्ट", government: "सरकारी सेवाएं", bihar: "बिहार बोर्ड", rtps: "RTPS सेवाएं", pan: "PAN कार्ड", aadhaar: "आधार / UIDAI" }
@@ -99,6 +95,7 @@ const categoryIcons = {
 
 // Initialize Application
 document.addEventListener("DOMContentLoaded", () => {
+    activeCategory = "all";
     recordPortalVisit();
     loadThemePreference();
     loadWebsitesAndFavorites();
@@ -212,11 +209,16 @@ function renderCategoryTabs() {
         counts[site.category] = (counts[site.category] || 0) + 1;
     });
 
-    Object.keys(categoryLabels).forEach(catKey => {
+    const categoryKeys = Object.keys(categoryLabels).filter(catKey => catKey === "all" || counts[catKey] > 0);
+    if (!categoryKeys.includes(activeCategory)) activeCategory = "all";
+
+    categoryKeys.forEach(catKey => {
         const count = counts[catKey] || 0;
         const tab = document.createElement("button");
         tab.className = `category-tab ${catKey === activeCategory ? "active" : ""}`;
         tab.dataset.category = catKey;
+        tab.setAttribute("aria-pressed", String(catKey === activeCategory));
+        tab.title = `${categoryLabels[catKey]}: ${count} links`;
 
         const iconClass = categoryIcons[catKey] || "fa-bookmark";
         tab.innerHTML = `
@@ -227,11 +229,16 @@ function renderCategoryTabs() {
 
         tab.addEventListener("click", () => {
             activeCategory = catKey;
-            document.querySelectorAll(".category-tab").forEach(t => t.classList.remove("active"));
-            tab.classList.add("active");
+            document.querySelectorAll(".category-tab").forEach(t => {
+                const isActive = t === tab;
+                t.classList.toggle("active", isActive);
+                t.setAttribute("aria-pressed", String(isActive));
+            });
             categoryTabsContainer.classList.remove("mobile-menu-open");
+            document.body.classList.remove("category-menu-open");
             mobileCategoryToggle?.setAttribute("aria-expanded", "false");
             renderWebsites();
+            window.scrollTo({ top: 0, behavior: "smooth" });
         });
 
         categoryTabsContainer.appendChild(tab);
@@ -259,10 +266,9 @@ function getFilteredWebsites() {
     });
 }
 
-// Render Website Cards Grid
+// Render website links in Sarkari boxes
 function renderWebsites() {
     const filtered = getFilteredWebsites();
-    websiteGrid.innerHTML = "";
     sarkariBoxGrid.innerHTML = "";
 
     // Update stats counters
@@ -271,100 +277,6 @@ function renderWebsites() {
     updateDesktopStats();
 
     renderSarkariBoxes(filtered);
-
-    if (filtered.length === 0) {
-        websiteGrid.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-search empty-icon"></i>
-                <h3 class="empty-title">Koi Website Nahi Mili!</h3>
-                <p class="empty-desc">Aapki search query ya selected category ke liye koi result nahi mila. Search text change karein ya naye links add karein.</p>
-            </div>
-        `;
-        return;
-    }
-
-    filtered.forEach(site => {
-        const isFav = favorites.has(site.id);
-        const card = document.createElement("div");
-        card.className = "card";
-
-        // Category display label
-        const catLabel = categoryLabels[site.category] || site.category;
-        
-        // Custom user added indicator
-        const isCustom = site.isCustom === true;
-
-        const tagsHTML = site.tags && site.tags.length > 0 
-            ? site.tags.map(t => `<span class="tag">#${t}</span>`).join("")
-            : "";
-
-        card.innerHTML = `
-            <div class="card-header">
-                <div class="card-icon-title">
-                    <div class="card-icon">
-                        <i class="fas ${getIconForSite(site)}"></i>
-                    </div>
-                    <div>
-                        <h3 class="card-title">${escapeHTML(site.title)}</h3>
-                    </div>
-                </div>
-                <button class="btn-star ${isFav ? "active" : ""}" title="${isFav ? "Remove from Favorites" : "Add to Favorites"}" data-id="${site.id}">
-                    <i class="${isFav ? "fas" : "far"} fa-star"></i>
-                </button>
-            </div>
-            
-            <p class="card-description">${escapeHTML(site.description)}</p>
-            
-            <div class="card-tags">
-                ${tagsHTML}
-            </div>
-
-            <div class="card-footer">
-                <span class="category-badge"><i class="fas fa-folder-open"></i> ${escapeHTML(catLabel)}</span>
-                <div class="card-actions">
-                    <button class="btn-card-action btn-copy-link" data-url="${site.url}" title="Copy Link">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                    ${isCustom ? `
-                        <button class="btn-card-action btn-delete-card" data-id="${site.id}" title="Delete Link">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    ` : ''}
-                    <a href="${site.url}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-visit">
-                        Visit <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </div>
-            </div>
-        `;
-
-        // Event listener for Favorite star
-        const starBtn = card.querySelector(".btn-star");
-        starBtn.addEventListener("click", () => toggleFavorite(site));
-
-        // Copy Link Action
-        const copyBtn = card.querySelector(".btn-copy-link");
-        copyBtn.addEventListener("click", () => {
-            navigator.clipboard.writeText(site.url).then(() => {
-                showToast("Link clipboard me copy ho gaya!");
-            }).catch(err => {
-                console.error("Copy failed", err);
-            });
-        });
-
-        // Delete Custom Link Action
-        const deleteBtn = card.querySelector(".btn-delete-card");
-        if (deleteBtn) {
-            deleteBtn.addEventListener("click", () => {
-                if (confirm(`Kya aap "${site.title}" link ko delete karna chahte hain?`)) {
-                    deleteCustomWebsite(site.id);
-                }
-            });
-        }
-
-        card.querySelector(".btn-card-visit").addEventListener("click", () => rememberRecentLink(site));
-
-        websiteGrid.appendChild(card);
-    });
 }
 
 function updateDesktopStats() {
@@ -441,7 +353,7 @@ function createSarkariLink(site) {
     item.innerHTML = `
         <a class="link-left-content" href="${escapeAttribute(site.url)}" target="_blank" rel="noopener noreferrer">
             <i class="fas ${getIconForSite(site)}"></i>
-            <span class="link-title-text">${escapeHTML(site.title)}</span>
+            <span class="link-title-text" data-title-length="${site.title.length > 55 ? "long" : site.title.length > 35 ? "medium" : "short"}">${escapeHTML(site.title)}</span>
         </a>
         <div class="link-badges">
             ${site.isNew ? `<span class="badge-new">${escapeHTML(site.badgeText || "NEW")}</span>` : ""}
@@ -478,19 +390,7 @@ function toggleFavorite(site) {
     renderWebsites();
 }
 
-function setView(view) {
-    currentView = view;
-    localStorage.setItem("cse_view", view);
-    const showSarkari = view === "sarkari";
-    sarkariBoxGrid.classList.toggle("hidden", !showSarkari);
-    websiteGrid.classList.toggle("hidden", showSarkari);
-    btnSarkariView.classList.toggle("active", showSarkari);
-    btnCardView.classList.toggle("active", !showSarkari);
-    btnSarkariView.setAttribute("aria-pressed", String(showSarkari));
-    btnCardView.setAttribute("aria-pressed", String(!showSarkari));
-}
-
-// Icon mapper for website card
+// Icon mapper for website links
 function getIconForSite(site) {
     if (site.icon === "code" || site.category === "coding") return "fa-code";
     if (site.category === "webdev") return "fa-laptop-code";
@@ -510,9 +410,6 @@ function getIconForSite(site) {
 
 // Setup Event Listeners
 function setupEventListeners() {
-    btnSarkariView.addEventListener("click", () => setView("sarkari"));
-    btnCardView.addEventListener("click", () => setView("cards"));
-
     document.addEventListener("click", event => {
         const link = event.target.closest("a");
         if (link?.getAttribute("href") !== rtpsStatusUrl) return;
@@ -570,6 +467,7 @@ function setupEventListeners() {
 
     mobileCategoryToggle?.addEventListener("click", () => {
         const isOpen = categoryTabsContainer.classList.toggle("mobile-menu-open");
+        document.body.classList.toggle("category-menu-open", isOpen);
         mobileCategoryToggle.setAttribute("aria-expanded", String(isOpen));
     });
 
@@ -598,12 +496,9 @@ function setupEventListeners() {
     mobileWebMenu?.querySelectorAll("[data-menu-action]").forEach(button => {
         button.addEventListener("click", () => {
             const action = button.dataset.menuAction;
-            const actionNames = { box: "Box View", cards: "Card View", favorites: "Favorites", theme: "Theme", categories: "Categories", quick: "Quick Access" };
-            if (action === "box") btnSarkariView.click();
-            if (action === "cards") btnCardView.click();
+            const actionNames = { favorites: "Favorites", theme: "Theme", quick: "Quick Access" };
             if (action === "favorites") favoritesFilterBtn.click();
             if (action === "theme") themeToggleBtn.click();
-            if (action === "categories") mobileCategoryToggle?.click();
             if (action === "quick") mobileQuickToggle?.click();
             mobileWebMenu.querySelectorAll("[data-menu-action]").forEach(item => item.classList.toggle("active", item === button));
             if (mobileMenuStatus) mobileMenuStatus.querySelector("span").textContent = `${currentLanguage === "hi" ? "सक्रिय" : "Active"}: ${actionNames[action]}`;
@@ -703,7 +598,6 @@ function setupEventListeners() {
 
     // Modal support remains optional for future admin-only builds.
     if (!addWebsiteBtn || !websiteModal || !addWebsiteForm) {
-        setView(currentView);
         return;
     }
 
@@ -765,7 +659,6 @@ function setupEventListeners() {
         showToast(`"${title}" naya link successfully add ho gaya!`);
     });
 
-    setView(currentView);
 }
 
 // Show Toast notification
