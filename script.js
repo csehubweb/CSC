@@ -4,6 +4,21 @@ let favorites = new Set();
 let activeCategory = "all";
 let searchQuery = "";
 let showFavoritesOnly = false;
+const rtpsStatusUrl = "https://serviceonline.bihar.gov.in/officials/citizenApplication.html";
+
+function openRtpsStatus() {
+    const targetName = "servicePlusStatus";
+    const statusWindow = window.open("", targetName, "width=1100,height=750,scrollbars=yes,resizable=yes");
+    if (!statusWindow) return;
+
+    const statusForm = document.createElement("form");
+    statusForm.method = "POST";
+    statusForm.action = rtpsStatusUrl;
+    statusForm.target = targetName;
+    document.body.appendChild(statusForm);
+    statusForm.submit();
+    statusForm.remove();
+}
 
 // DOM Elements
 const websiteGrid = document.getElementById("websiteGrid");
@@ -491,6 +506,13 @@ function getIconForSite(site) {
 function setupEventListeners() {
     btnSarkariView.addEventListener("click", () => setView("sarkari"));
     btnCardView.addEventListener("click", () => setView("cards"));
+
+    document.addEventListener("click", event => {
+        const link = event.target.closest("a");
+        if (link?.getAttribute("href") !== rtpsStatusUrl) return;
+        event.preventDefault();
+        openRtpsStatus();
+    });
 
     contactToggle?.addEventListener("click", () => {
         const contactStrip = contactToggle.closest(".contact-strip");
