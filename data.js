@@ -387,6 +387,36 @@ const initialWebsites = [
         isNew: false,
         badgeText: "OFFICIAL"
     },
+    {
+        id: "50",
+        title: "Residential Certificate Application",
+        url: "https://qrgo.page.link/8YEcD",
+        category: "rtps",
+        description: "Apply for a Residential Certificate through the official RTPS portal.",
+        tags: ["RTPS", "Government"],
+        isNew: true,
+        badgeText: "BIHAR"
+    },
+    {
+        id: "51",
+        title: "Caste Certificate Application",
+        url: "https://qrgo.page.link/6KUoU",
+        category: "rtps",
+        description: "Apply for a Caste Certificate through the official RTPS portal.",
+        tags: ["RTPS", "Government"],
+        isNew: true,
+        badgeText: "BIHAR"
+    },
+    {
+        id: "52",
+        title: "Income Certificate Application",
+        url: "https://qrgo.page.link/fmxvX",
+        category: "rtps",
+        description: "Apply for an Income Certificate through the official RTPS portal.",
+        tags: ["RTPS", "Government"],
+        isNew: true,
+        badgeText: "BIHAR"
+    },
     //PAN Card Services
     {
         id: "40",
@@ -481,12 +511,44 @@ const initialWebsites = [
         badgeText: "VOTER"
     },
 
+    // Farmer Card Services
+    {
+        id: "56",
+        title: "Farmer Card Apply",
+        url: "https://bhfr.agristack.gov.in/farmer-registry-bh/#/",
+        category: "farmer_card",
+        description: "Apply for and manage your Farmer Card.",
+        tags: ["Agriculture", "Farmer Services"],
+        isNew: true,
+        badgeText: "BIHAR"
+    },
+    {
+        id: "57",
+        title: "Farmer Card Status Check",
+        url: "https://bhfr.agristack.gov.in/farmer-registry-bh/#/checkEnrolmentStatus",
+        category: "farmer_card",
+        description: "Check the status of your Farmer Card application.",
+        tags: ["Agriculture", "Farmer Services"],
+        isNew: false,
+        badgeText: "BIHAR"
+    },
+    {
+        id: "58",
+        title: "Farmer Card Details",
+        url: "https://bhfr.agristack.gov.in/farmer-registry-bh/#/homePrintEnrollmentDetails",
+        category: "farmer_card",
+        description: "View your Farmer Card details online.",
+        tags: ["Agriculture", "Farmer Services"],
+        isNew: false,
+        badgeText: "BIHAR"
+    }
+
 ];
 
 const categoryLabels = {
     all: "TOTAL LINKS (ALL)",
     coding: "Coding & Contests",
-    jobs: "Jobs & Off-Campus Hiring",
+    jobs: "Jobs & Internships",
     learning: "Core CSE & GATE Prep",
     webdev: "Web Development Docs",
     ai: "AI & Data Science",
@@ -497,7 +559,8 @@ const categoryLabels = {
     rtps: "RTPS Services",
     pan: "PAN Card Services",
     aadhaar: "Aadhaar / UIDAI",
-    voter: "Voter ID Services"
+    voter: "Voter ID Services",
+    farmer_card: "Farmer Card Services"
 };
 
 const sarkariBoxConfig = [
@@ -558,8 +621,8 @@ const sarkariBoxConfig = [
     {
         category: "rtps",
         title: "RTPS SERVICES (RTPS सेवाएँ)",
-        headerBg: "linear-gradient(135deg, #0f172a 0%, #334155 100%)",
-        borderColor: "#334155"
+        headerBg: "linear-gradient(135deg, #711166dc 0%, #b92d60 100%)",
+        borderColor: "#b92d60"
     },
     {
         category: "pan",
@@ -578,6 +641,12 @@ const sarkariBoxConfig = [
         title: "VOTER ID SERVICES (मतदाता पहचान सेवाएँ)",
         headerBg: "linear-gradient(135deg, #f1f11f 0%, #398d24 100%)",
         borderColor: "#d2b216"
+    },
+    {
+        category: "farmer_card",
+        title: "FARMER CARD SERVICES (किसान कार्ड सेवाएँ)",
+        headerBg: "linear-gradient(135deg, #341665 0%, #b28300 100%)",
+        borderColor: "#b28300"
     }
 ];
 
