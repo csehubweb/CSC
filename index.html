@@ -63,11 +63,8 @@
                 <div class="mobile-web-menu" id="mobileWebMenu" aria-label="Web menu">
                     <label class="mobile-menu-search"><i class="fas fa-search"></i><input id="mobileMenuSearchInput" type="search" placeholder="Search links..."></label>
                     <div class="mobile-menu-status" id="mobileMenuStatus"><i class="fas fa-circle-check"></i><span>Ready: Box View</span></div>
-                    <button type="button" data-menu-action="box"><i class="fas fa-table-cells-large"></i><span>Box View</span></button>
-                    <button type="button" data-menu-action="cards"><i class="fas fa-table-columns"></i><span>Card View</span></button>
                     <button type="button" data-menu-action="favorites"><i class="fas fa-star"></i><span>Favorites</span></button>
                     <button type="button" data-menu-action="theme"><i class="fas fa-circle-half-stroke"></i><span>Theme</span></button>
-                    <button type="button" data-menu-action="categories"><i class="fas fa-list"></i><span>Categories</span></button>
                     <button type="button" data-menu-action="quick"><i class="fas fa-bolt"></i><span>Quick Access</span></button>
             </div>
             </div>
@@ -125,18 +122,6 @@
                 </div>
             </div>
 
-            <!-- Controls Bar -->
-            <div class="controls-bar">
-                <div class="view-toggle-group">
-                    <button class="btn-toggle-view active" id="btnSarkariView" type="button" aria-pressed="true" title="Sarkari Result Box Layout">
-                        <i class="fas fa-table-cells-large"></i> <span data-i18n="boxView">Box View</span>
-                    </button>
-                    <button class="btn-toggle-view" id="btnCardView" type="button" aria-pressed="false" title="Detailed Cards View">
-                        <i class="fas fa-table-columns"></i> <span data-i18n="cardsView">Cards View</span>
-                    </button>
-                </div>
-                <span class="status-badge"><i class="fas fa-lock"></i> Domain Controlled</span>
-            </div>
         </section>
 
         <section class="quick-access" aria-label="Quick access categories">
@@ -181,11 +166,6 @@
         <section class="sarkari-box-container" id="sarkariBoxGrid">
             <!-- Dynamically populated Sarkari boxes -->
         </section>
-
-        <!-- Detailed Websites Card Grid Container (Alternative View) -->
-        <main class="website-grid hidden" id="websiteGrid">
-            <!-- Dynamically populated website cards -->
-        </main>
 
         <section class="desktop-dashboard" aria-label="CSC dashboard">
             <div class="desktop-stat-card desktop-stat-total"><span class="desktop-stat-icon"><i class="fas fa-link"></i></span><span><small>Total Links</small><strong id="desktopTotalLinks">0</strong></span></div>
