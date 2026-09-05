@@ -271,6 +271,7 @@ function getFilteredWebsites() {
 function renderWebsites() {
     const filtered = getFilteredWebsites();
     sarkariBoxGrid.innerHTML = "";
+    sarkariBoxGrid.classList.toggle("is-filtered", activeCategory !== "all");
 
     // Update stats counters
     visibleCountEl.textContent = filtered.length;
