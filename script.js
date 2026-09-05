@@ -410,9 +410,15 @@ function renderSarkariBoxes(filtered) {
         ? sarkariBoxConfig
         : sarkariBoxConfig.filter(config => config.category === activeCategory);
 
-    visibleCategories.forEach(config => {
-        const categorySites = filtered.filter(site => site.category === config.category);
-        if (categorySites.length === 0) return;
+    const categoriesWithSites = visibleCategories
+        .map(config => ({
+            config,
+            sites: filtered.filter(site => site.category === config.category)
+        }))
+        .filter(category => category.sites.length > 0)
+        .sort((first, second) => second.sites.length - first.sites.length);
+
+    categoriesWithSites.forEach(({ config, sites: categorySites }) => {
 
         const box = document.createElement("section");
         box.className = "sarkari-box";
