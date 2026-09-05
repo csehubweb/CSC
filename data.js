@@ -423,8 +423,8 @@ const initialWebsites = [
         title: "PAN Card Official Portal",
         url: "https://tinpan.proteantech.in/",
         category: "pan",
-        description: "Official PAN card portal for application, updates, and citizen services.",
-        tags: ["ProteanTech", "Tax"],
+        description: "Official",
+        tags: ["Protean"],
         isNew: true,
         badgeText: "OFFICIAL"
     },
