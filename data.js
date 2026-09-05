@@ -370,7 +370,7 @@ const initialWebsites = [
     {
         id: "48",
         title: "RTPS Application Status",
-        url: "https://serviceonline.bihar.gov.in/officials/citizenApplication.html",
+        url: "rtps-application-status.html",
         category: "rtps",
         description: "Check the status of your RTPS application.",
         tags: ["RTPS", "Government"],
@@ -435,7 +435,7 @@ const initialWebsites = [
         url: "https://www.eci.gov.in/",
         category: "voter",
         description: "Official portal for Voter ID services and information.",
-        tags: ["Election Commission", "Voter Services"],
+        tags: ["Election", "Voter Services"],
         isNew: true,
         badgeText: "OFFICIAL"
     },
@@ -465,7 +465,7 @@ const initialWebsites = [
         url: "https://voters.eci.gov.in/form8",
         category: "voter",
         description: "Apply for corrections in your Voter ID details.",
-        tags: ["Election Commission", "Voter Services"],
+        tags: ["Election", "Voter Services"],
         isNew: true,
         badgeText: "OFFICIAL"
     },
