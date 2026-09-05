@@ -353,7 +353,7 @@ function createSarkariLink(site) {
     const item = document.createElement("div");
     item.className = "sarkari-link-item";
     item.innerHTML = `
-        <a class="link-left-content" href="${escapeAttribute(site.url)}" target="_blank" rel="noopener noreferrer">
+        <a class="link-left-content" href="${escapeAttribute(site.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeAttribute(`${site.title}. ${site.description}`)}">
             <i class="fas ${getIconForSite(site)}"></i>
             <span class="link-title-text" data-title-length="${site.title.length > 55 ? "long" : site.title.length > 35 ? "medium" : "short"}">${escapeHTML(site.title)}</span>
         </a>
