@@ -569,13 +569,14 @@ body {
 .hero-section { background: linear-gradient(180deg, #f8fbff, #fff); }
 .quick-access { display: flex; align-items: center; gap: 18px; margin: 0 12px 4px; padding: 12px 14px; border: 1px solid #dce5f1; border-radius: 9px; background: #fff; box-shadow: 0 4px 14px rgba(30,64,110,.07); }
 .quick-access-heading { display: flex; flex-direction: column; min-width: 108px; color: #26364d; font-size: .78rem; }
-.quick-access-links { display: grid; grid-template-columns: repeat(4, minmax(110px, 1fr)); gap: 8px; flex: 1; }
-.quick-access-link { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; color: #26364d; background: #f8fbff; border: 1px solid #dbe5f1; border-radius: 7px; font-size: .76rem; font-weight: 800; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease, color .2s ease; }
+.quick-access-links { display: flex; flex-wrap: nowrap; gap: 8px; flex: 1; overflow-x: auto; padding-bottom: 2px; }
+.quick-access-link { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; min-width: 110px; flex: 1 0 110px; color: #26364d; background: #f8fbff; border: 1px solid #dbe5f1; border-radius: 7px; font-size: .76rem; font-weight: 800; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease, color .2s ease; }
 .quick-access-link:hover { transform: translateY(-2px); color: #1267d8; box-shadow: 0 6px 15px rgba(30,64,110,.12); }
 .quick-result i { color: #e5484d; }
 .quick-jobs i { color: #0e9f6e; }
 .quick-bihar i { color: #d97706; }
 .quick-aadhaar i { color: #4f46e5; }
+.quick-rtps i { color: #7c3aed; }
 .category-heading { padding-top: 3px; }
 .sarkari-box-container, .website-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .sarkari-box-container.is-filtered { grid-template-columns: minmax(0, 1fr); }
@@ -620,6 +621,9 @@ body {
 }
 .category-container { scroll-snap-type: x proximity; }
 .category-tab { scroll-snap-align: start; }
+.clear-category-btn { margin: 0 12px 8px; padding: 8px 12px; border: 1px solid #dbe5f1; border-radius: 999px; background: linear-gradient(135deg, #eef5ff, #f8fbff); color: #1d4ed8; font-size: .74rem; font-weight: 800; cursor: pointer; transition: all .2s ease; }
+.clear-category-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(37,99,235,.12); }
+.clear-category-btn[hidden] { display: none; }
 
 button, .sarkari-link-item, .card { -webkit-user-select: none; user-select: none; }
 @media (prefers-reduced-motion: reduce) {
