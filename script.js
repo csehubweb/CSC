@@ -23,6 +23,7 @@ function openRtpsStatus() {
 // DOM Elements
 const sarkariBoxGrid = document.getElementById("sarkariBoxGrid");
 const categoryTabsContainer = document.getElementById("categoryTabs");
+const clearCategoryFilterBtn = document.getElementById("clearCategoryFilterBtn");
 const searchInput = document.getElementById("searchInput");
 const btnClearSearch = document.getElementById("btnClearSearch");
 const mobileSearchToggle = document.getElementById("mobileSearchToggle");
@@ -201,6 +202,14 @@ function deleteCustomWebsite(id) {
 }
 
 // Render Category Tabs dynamically
+function updateClearCategoryFilterButton() {
+    if (!clearCategoryFilterBtn) return;
+    const isFiltered = activeCategory !== "all";
+    clearCategoryFilterBtn.hidden = !isFiltered;
+    clearCategoryFilterBtn.textContent = isFiltered ? "Cancel" : "All Links";
+    clearCategoryFilterBtn.setAttribute("aria-label", isFiltered ? "Show all links" : "Show all links");
+}
+
 function renderCategoryTabs() {
     categoryTabsContainer.innerHTML = "";
 
@@ -212,6 +221,8 @@ function renderCategoryTabs() {
 
     const categoryKeys = Object.keys(categoryLabels).filter(catKey => catKey === "all" || counts[catKey] > 0);
     if (!categoryKeys.includes(activeCategory)) activeCategory = "all";
+
+    updateClearCategoryFilterButton();
 
     categoryKeys.forEach(catKey => {
         const count = counts[catKey] || 0;
@@ -230,11 +241,7 @@ function renderCategoryTabs() {
 
         tab.addEventListener("click", () => {
             activeCategory = catKey;
-            document.querySelectorAll(".category-tab").forEach(t => {
-                const isActive = t === tab;
-                t.classList.toggle("active", isActive);
-                t.setAttribute("aria-pressed", String(isActive));
-            });
+            renderCategoryTabs();
             categoryTabsContainer.classList.remove("mobile-menu-open");
             document.body.classList.remove("category-menu-open");
             mobileCategoryToggle?.setAttribute("aria-expanded", "false");
@@ -435,12 +442,16 @@ function setupEventListeners() {
     document.querySelectorAll(".quick-access-link").forEach(button => {
         button.addEventListener("click", () => {
             activeCategory = button.dataset.category;
-            document.querySelectorAll(".category-tab").forEach(tab => {
-                tab.classList.toggle("active", tab.dataset.category === activeCategory);
-            });
+            renderCategoryTabs();
             renderWebsites();
             document.getElementById("categoryTabs").scrollIntoView({ behavior: "smooth", block: "center" });
         });
+    });
+
+    clearCategoryFilterBtn?.addEventListener("click", () => {
+        activeCategory = "all";
+        renderCategoryTabs();
+        renderWebsites();
     });
 
     // Search input
