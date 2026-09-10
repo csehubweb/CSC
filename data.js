@@ -1,60 +1,24 @@
 const initialWebsites = [
-    // Coding & Contests
+    //PDS 2.0 Services
     {
         id: "1",
-        title: "LeetCode (Problem Solving & DSA)",
-        url: "https://leetcode.com/",
-        category: "coding",
-        description: "Platform for preparing technical coding interviews and practicing DSA problems.",
-        tags: ["DSA", "Interviews", "Coding"],
+        title: "PDS 2.0 (Platform for Digital Services)",
+        url: "https://br.smartpds.nic.in/login",
+        category: "pds",
+        description: "A comprehensive platform for digital services and solutions.",
+        tags: ["Digital Services", "Solutions"],
         isNew: true,
-        badgeText: "HOT"
+        badgeText: "BIHAR"
     },
     {
         id: "2",
-        title: "GeeksforGeeks (CS Portal & DSA)",
-        url: "https://www.geeksforgeeks.org/",
-        category: "coding",
-        description: "Computer Science portal for tutorials, DSA, interview experiences, and core CS subjects.",
-        tags: ["DSA", "Tutorials", "Core CS"],
-        isNew: false
-    },
-    {
-        id: "3",
-        title: "CodeChef (Monthly Contests & CP)",
-        url: "https://www.codechef.com/",
-        category: "coding",
-        description: "Competitive programming website with monthly contests and learning paths.",
-        tags: ["Contests", "Competitive Coding"],
+        title: "PDS 2.0 Track Application Status",
+        url: "https://br.smartpds.nic.in/track",
+        category: "pds",
+        description: "Track the status of your applications and requests on the PDS 2.0 platform.",
+        tags: ["Bihar", "Status"],
         isNew: true,
-        badgeText: "CONTEST"
-    },
-    {
-        id: "4",
-        title: "Codeforces (Global Coding Contests)",
-        url: "https://codeforces.com/",
-        category: "coding",
-        description: "Competitive programming community hosting regular contests and rating systems.",
-        tags: ["Contests", "Algorithms"],
-        isNew: false
-    },
-    {
-        id: "5",
-        title: "HackerRank (Skill Badges & Practice)",
-        url: "https://www.hackerrank.com/",
-        category: "coding",
-        description: "Practice coding skill badges, SQL, domain-specific challenges, and assessments.",
-        tags: ["Badges", "Practice", "SQL"],
-        isNew: false
-    },
-    {
-        id: "6",
-        title: "GitHub (Code Hosting & Projects)",
-        url: "https://github.com/",
-        category: "coding",
-        description: "Host code, manage repositories, collaborate open-source, and showcase projects.",
-        tags: ["Git", "Version Control", "Projects"],
-        isNew: false
+        badgeText: "TRACK"
     },
 
     // Jobs & Internships
@@ -561,7 +525,8 @@ const categoryLabels = {
     pan: "PAN Card Services",
     aadhaar: "Aadhaar / UIDAI",
     voter: "Voter ID Services",
-    farmer_card: "Farmer Card Services"
+    farmer_card: "Farmer Card Services",
+    pds: "PDS 2.0 Services"
 };
 
 const sarkariBoxConfig = [
@@ -648,6 +613,12 @@ const sarkariBoxConfig = [
         title: "FARMER CARD SERVICES (किसान कार्ड सेवाएँ)",
         headerBg: "linear-gradient(135deg, #341665 0%, #b28300 100%)",
         borderColor: "#b28300"
+    },
+    {
+        category: "pds",
+        title: "PDS 2.0 SERVICES (PDS 2.0 सेवाएँ)",
+        headerBg: "linear-gradient(135deg, #e20d58 0%, #e623d9 100%)",
+        borderColor: "#dd13ab"
     }
 ];
 
