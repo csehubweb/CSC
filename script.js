@@ -92,6 +92,7 @@ const categoryIcons = {
     pan: "fa-id-card-clip", // Using a generic certificate icon for PAN
     voter: "fa-person-booth",
     farmer_card: "fa-tractor",
+    pds: "fa-database",
     others: "fa-globe"
 };
 
@@ -415,6 +416,7 @@ function getIconForSite(site) {
     if (site.category === "rtps") return "fa-file-lines";
     if (site.category === "voter") return "fa-person-booth";
     if (site.category === "farmer_card") return "fa-tractor";
+    if (site.category === "pds") return "fa-database";
     return "fa-globe";
 }
 
