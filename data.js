@@ -515,7 +515,7 @@ const initialWebsites = [
         description: "New Semester Login Site",
         tags: ["Semester", "Farmer Services"],
         isNew: true,
-        badgeText: LND"
+        badgeText: "LND"
     }
 
 ];
