@@ -93,6 +93,7 @@ const categoryIcons = {
     voter: "fa-person-booth",
     farmer_card: "fa-tractor",
     pds: "fa-database",
+    lnd: "fa-college",
     others: "fa-globe"
 };
 
@@ -417,6 +418,7 @@ function getIconForSite(site) {
     if (site.category === "voter") return "fa-person-booth";
     if (site.category === "farmer_card") return "fa-tractor";
     if (site.category === "pds") return "fa-database";
+    if (site.category === "lnd") return "college";
     return "fa-globe";
 }
 
