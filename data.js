@@ -506,6 +506,16 @@ const initialWebsites = [
         tags: ["Agriculture", "Farmer Services"],
         isNew: false,
         badgeText: "BIHAR"
+    },
+    {
+        id: "59",
+        title: "LND College admission Sem Login",
+        url: "https://lndcollege.co.in/Semesters/Common/Admission/login.php",
+        category: "lnd",
+        description: "New Semester Login Site",
+        tags: ["Semester", "Farmer Services"],
+        isNew: true,
+        badgeText: LND"
     }
 
 ];
@@ -526,7 +536,8 @@ const categoryLabels = {
     aadhaar: "Aadhaar / UIDAI",
     voter: "Voter ID Services",
     farmer_card: "Farmer Card Services",
-    pds: "PDS 2.0 Services"
+    pds: "PDS 2.0 Services",
+    lnd: "L.N.D. College"
 };
 
 const sarkariBoxConfig = [
@@ -619,11 +630,18 @@ const sarkariBoxConfig = [
         title: "PDS 2.0 SERVICES (PDS 2.0 सेवाएँ)",
         headerBg: "linear-gradient(135deg, #e20d58 0%, #e623d9 100%)",
         borderColor: "#dd13ab"
+    },
+    {
+        category: "lnd",
+        title: "L.N.D. College Update",
+        headerBg: "linear-gradient(135deg, #0c139b 0%, #21b045 100%)",
+        borderColor: "#dd13ab"
+
     }
 ];
 
 const marqueeNotice = [
-    { title: "TCS NQT 2026 Registration Open - Off Campus Hiring Drive", url: "https://www.tcs.com/careers", type: "JOB" },
+    { title: "L.N.D. College New Admission Website", url: "https://lndcollege.co.in/Semesters/Common/Admission/login.php", type: "NEW" },
     { title: "Sarkari Result: Latest Government Jobs & Admit Cards", url: "https://www.sarkariresult.com/", type: "RESULT" },
     { title: "LeetCode Weekly Contest Live - Practice DSA Problems", url: "https://leetcode.com/contest/", type: "CONTEST" },
     { title: "GATE 2027 CSE Notes & OS, DBMS Lectures Updated", url: "https://gate.iitk.ac.in/", type: "NOTICE" },
